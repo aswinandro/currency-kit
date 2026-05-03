@@ -1,5 +1,3 @@
-
-
 # CurrencyKit Documentation
 
 [![npm version](https://img.shields.io/npm/v/currency-kit-code.svg)](https://www.npmjs.com/package/currency-kit-code)
@@ -11,6 +9,7 @@ CurrencyKit is a React Native npm package for displaying all world currency symb
 ## Features
 - Get currency symbol by ISO 4217 code
 - Display stylized SVG symbols in React Native
+- Auto-detect and display the user's local currency symbol (no permissions required)
 - Locale/variant support for multi-locale currencies
 - CLI for adding/updating currencies
 - Demo component to showcase all features
@@ -25,10 +24,13 @@ npm install currency-kit-code
 
 ## Usage
 ```js
-import { getCurrencySymbol, CurrencySymbol, CurrencyAmount } from 'currency-kit-code';
+import { getCurrencySymbol, getUserCurrencySymbol, CurrencySymbol, CurrencyAmount } from 'currency-kit-code';
 
 // Get symbol as string
 const symbol = getCurrencySymbol('USD'); // $
+
+// Get the user's local currency symbol automatically
+const userSymbol = getUserCurrencySymbol(); // e.g., '£' in UK, '$' in US, '₹' in India
 
 // Render a simple symbol
 <CurrencySymbol code="EUR" size={32} color="#2196f3" />
@@ -70,6 +72,12 @@ const symbol = getCurrencySymbol('USD'); // $
 	] }}
 	amountProps={{ style: { fontSize: 28, color: '#333' } }}
 />
+```
+
+### Get the user's local currency symbol (optional)
+```js
+import { getUserCurrencySymbol } from 'currency-kit-code';
+const symbol = getUserCurrencySymbol(); // e.g., '£' in UK, '$' in US, '₹' in India
 ```
 
 ## CLI Usage

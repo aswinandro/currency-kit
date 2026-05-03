@@ -1,7 +1,7 @@
 {
   "name": "currency-kit-code",
   "version": "1.0.2",
-  "description": "",
+  "description": "React Native package for displaying all world currency symbols with SVGs, gradients, and auto-detect by user location.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,5 +9,6 @@
   "license": "ISC",
   "bin": {
     "currency-kit": "./currency-kit-cli.js"
-  }
+  },
+  "usage": "// Optional: Get the user's local currency symbol automatically (no permissions required)\nimport { getUserCurrencySymbol } from 'currency-kit-code';\nconst symbol = getUserCurrencySymbol(); // e.g., '£' in UK, '$' in US, '₹' in India\n"
 }

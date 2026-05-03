@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { CurrencySymbol } from './index';
-import { currencySymbols } from './currency-symbols';
+import { CurrencySymbol } from '../components/CurrencySymbol';
+import { currencySymbols } from '../data/currency-symbols';
 
 // Demo component to showcase all currency symbols
 export default function CurrencyKitDemo() {

@@ -19,7 +19,7 @@ import { CurrencySymbol, getCurrencySymbol } from 'currency-kit-code';
 3. Get a symbol programmatically:
 
 ```js
-const symbol = getCurrencySymbol('EUR'); // returns '€'
+const symbol = getCurrencySymbol('EUR'); // returns '\u20ac'
 ```
 
 4. See all supported codes in the demo:

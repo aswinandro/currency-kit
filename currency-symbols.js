@@ -157,6 +157,5 @@ export const currencySymbols = {
   YER: '﷼',
   ZAR: 'R',
   ZMW: 'ZK',
-  ZWL: 'USD',
-  ABC: '¤'
+  ZWL: 'USD'
 };

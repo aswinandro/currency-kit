@@ -12,12 +12,12 @@ CurrencyKit is a React Native npm package for displaying all world currency symb
 
 ## Installation
 ```sh
-npm install currency-kit
+npm install currency-kit-code
 ```
 
 ## Usage
 ```js
-import { getCurrencySymbol, CurrencySymbol } from 'currency-kit';
+import { getCurrencySymbol, CurrencySymbol } from 'currency-kit-code';
 
 // Get symbol as string
 const symbol = getCurrencySymbol('USD'); // $
@@ -28,9 +28,9 @@ const symbol = getCurrencySymbol('USD'); // $
 
 ## CLI Usage
 ```sh
-npx currency-kit list
-npx currency-kit add --code=XYZ --symbol=¤
-npx currency-kit update --code=XYZ --symbol=§
+npx currency-kit-code list
+npx currency-kit-code add --code=XYZ --symbol=¤
+npx currency-kit-code update --code=XYZ --symbol=§
 ```
 
 ## Demo

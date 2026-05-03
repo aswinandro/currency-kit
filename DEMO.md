@@ -7,7 +7,7 @@ This demo showcases the usage of the `CurrencySymbol` React Native component and
 1. Import the component and mapping:
 
 ```js
-import { CurrencySymbol, getCurrencySymbol } from 'currency-kit';
+import { CurrencySymbol, getCurrencySymbol } from 'currency-kit-code';
 ```
 
 2. Render a currency symbol:

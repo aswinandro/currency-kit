@@ -5,8 +5,8 @@ A simple CLI tool to add or update currency symbols in your project.
 ## Usage
 
 ```
-npx currency-kit-cli add --code=USD --symbol="$" --svg=./svgs/USD.svg
-npx currency-kit-cli update --code=INR --svg=./svgs/INR.svg
+npx currency-kit-code add --code=USD --symbol="$" --svg=./svgs/USD.svg
+npx currency-kit-code update --code=INR --svg=./svgs/INR.svg
 ```
 
 ## Features (Planned)

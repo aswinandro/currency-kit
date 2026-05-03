@@ -26,12 +26,77 @@ function parseArgs() {
 function main() {
   const { cmd, opts } = parseArgs();
   switch (cmd) {
-    case 'add':
-      console.log('Add command (not implemented yet)', opts);
+    case 'add': {
+      const { code, symbol } = opts;
+      if (!code || !symbol) {
+        console.error('Usage: currency-kit add --code=XXX --symbol=SYMBOL');
+        process.exit(1);
+      }
+      const file = path.join(__dirname, 'currency-symbols.js');
+      let content = fs.readFileSync(file, 'utf8');
+      // Find the export const currencySymbols = { ... } block
+      const match = content.match(/export const currencySymbols = \{([\s\S]*?)\n\};/);
+      if (!match) {
+        console.error('Could not find currencySymbols object in currency-symbols.js');
+        process.exit(1);
+      }
+      let objStr = match[1];
+      if (objStr.includes(`\n  ${code}:`)) {
+        console.error(`Currency code ${code} already exists.`);
+        process.exit(1);
+      }
+      // Insert new code at the end before closing }
+      const insert = `  ${code}: '${symbol}',\n`;
+      content = content.replace(/(export const currencySymbols = \{[\s\S]*?)\n\};/, `$1\n${insert}};`);
+      fs.writeFileSync(file, content, 'utf8');
+      console.log(`Added ${code}: '${symbol}' to currency-symbols.js`);
       break;
-    case 'update':
-      console.log('Update command (not implemented yet)', opts);
+    }
+    case 'update': {
+      const { code, symbol } = opts;
+      if (!code || !symbol) {
+        console.error('Usage: currency-kit update --code=XXX --symbol=SYMBOL');
+        process.exit(1);
+      }
+      const file = path.join(__dirname, 'currency-symbols.js');
+      let content = fs.readFileSync(file, 'utf8');
+      // Find the export const currencySymbols = { ... } block
+      const match = content.match(/export const currencySymbols = \{([\s\S]*?)\n\};/);
+      if (!match) {
+        console.error('Could not find currencySymbols object in currency-symbols.js');
+        process.exit(1);
+      }
+      let objStr = match[1];
+      // Parse the object for existence check (robust)
+      let exists = false;
+      try {
+        const objCode = `module.exports = ${content.match(/export const currencySymbols = (\{[\s\S]*?\n\};)/)[1]}`;
+        const temp = {};
+        // eslint-disable-next-line no-eval
+        eval(objCode);
+        exists = Object.prototype.hasOwnProperty.call(module.exports, code);
+      } catch (e) {
+        // fallback to regex if parsing fails
+      }
+      if (!exists) {
+        console.error(`Currency code ${code} does not exist.`);
+        process.exit(1);
+      }
+      // Try to match with comma (not last property)
+      let regex = new RegExp(`(\n\s*)${code}: [^,\n]+,`);
+      let found = regex.test(objStr);
+      if (!found) {
+        // Try to match last property (no comma, before closing brace)
+        regex = new RegExp(`(\n\s*)${code}: [^,\n]+(?=\n?\s*\})`);
+        found = regex.test(objStr);
+      }
+      content = content.replace(regex, `$1${code}: '${symbol}',`);
+      // Remove double comma if last property
+      content = content.replace(/,\s*};/, '\n};');
+      fs.writeFileSync(file, content, 'utf8');
+      console.log(`Updated ${code} to '${symbol}' in currency-symbols.js`);
       break;
+    }
     case 'list': {
       // List all supported currency codes and symbols
       try {

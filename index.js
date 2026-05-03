@@ -11,4 +11,39 @@ export function getCurrencySymbol(code) {
   return currencySymbols[code] || code;
 }
 
-// More features and React Native components will be added here.
+
+// --- React Native CurrencySymbol Component ---
+// Usage: <CurrencySymbol code="USD" size={32} color="#2196f3" gradient={["#2196f3", "#21cbf3"]} />
+import React from 'react';
+import { SvgXml } from 'react-native-svg';
+
+/**
+ * CurrencySymbol React Native component
+ * @param {object} props
+ * @param {string} props.code - ISO 4217 currency code
+ * @param {number} [props.size=32] - Icon size in px
+ * @param {string} [props.color] - Fill color (overrides SVG)
+ * @param {string[]} [props.gradient] - Array of colors for linear gradient fill
+ */
+export function CurrencySymbol({ code, size = 32, color, gradient }) {
+  // Import SVGs dynamically (assumes Metro bundler or custom loader)
+  // For demo, use require context or static import mapping
+  // In real usage, use a mapping from code to SVG string
+  const svgMap = {
+    USD: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="4" y="26" font-size="28" font-family="Arial">$</text></svg>`,
+    EUR: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="2" y="26" font-size="28" font-family="Arial">€</text></svg>`,
+    INR: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="2" y="26" font-size="28" font-family="Arial">₹</text></svg>`,
+    GBP: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="2" y="26" font-size="28" font-family="Arial">£</text></svg>`,
+    // ...add all SVGs or import from svgs folder
+  };
+  let svg = svgMap[code] || svgMap.USD;
+
+  // Color/gradient override (simple demo: replace fill or text color)
+  if (color) {
+    svg = svg.replace(/fill="[^"]*"/g, `fill="${color}"`).replace(/<text /, `<text fill="${color}" `);
+  }
+  // Gradient support (advanced: inject defs/linearGradient)
+  // For demo, not implemented
+
+  return <SvgXml xml={svg} width={size} height={size} />;
+}

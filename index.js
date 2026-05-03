@@ -26,9 +26,6 @@ import { SvgXml } from 'react-native-svg';
  * @param {string[]} [props.gradient] - Array of colors for linear gradient fill
  */
 export function CurrencySymbol({ code, size = 32, color, gradient }) {
-  // Import SVGs dynamically (assumes Metro bundler or custom loader)
-  // For demo, use require context or static import mapping
-  // In real usage, use a mapping from code to SVG string
   const svgMap = {
     USD: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="4" y="26" font-size="28" font-family="Arial">$</text></svg>`,
     EUR: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="2" y="26" font-size="28" font-family="Arial">€</text></svg>`,
@@ -38,12 +35,18 @@ export function CurrencySymbol({ code, size = 32, color, gradient }) {
   };
   let svg = svgMap[code] || svgMap.USD;
 
-  // Color/gradient override (simple demo: replace fill or text color)
-  if (color) {
+  // Color override
+  if (color && !gradient) {
     svg = svg.replace(/fill="[^"]*"/g, `fill="${color}"`).replace(/<text /, `<text fill="${color}" `);
   }
-  // Gradient support (advanced: inject defs/linearGradient)
-  // For demo, not implemented
+
+  // Gradient support (inject linearGradient and reference it)
+  if (gradient && Array.isArray(gradient) && gradient.length > 1) {
+    const gradId = `grad${Math.random().toString(36).slice(2, 10)}`;
+    const stops = gradient.map((c, i) => `<stop offset=\"${(i/(gradient.length-1))*100}%\" stop-color=\"${c}\" />`).join('');
+    svg = svg.replace('<svg ', `<svg >\n  <defs><linearGradient id=\"${gradId}\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">${stops}</linearGradient></defs>\n`);
+    svg = svg.replace(/<text /, `<text fill=\"url(#${gradId})\" `);
+  }
 
   return <SvgXml xml={svg} width={size} height={size} />;
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, Button } from 'react-native';
-import { CurrencySymbol } from './index';
+import { CurrencySymbol, CurrencyAmount } from './index';
 import { currencySymbols } from './currency-symbols';
 
 // Advanced demo: live customization and search
@@ -8,6 +8,10 @@ export default function CurrencyKitAdvancedDemo() {
   const [size, setSize] = useState(32);
   const [color, setColor] = useState('#2196f3');
   const [search, setSearch] = useState('');
+  const [symbolPosition, setSymbolPosition] = useState('before');
+  const [rtl, setRtl] = useState(false);
+  const [gradientType, setGradientType] = useState('linear');
+  const [useGradient, setUseGradient] = useState(false);
   const codes = Object.keys(currencySymbols).filter(code =>
     code.toLowerCase().includes(search.toLowerCase())
   );
@@ -28,6 +32,14 @@ export default function CurrencyKitAdvancedDemo() {
           value={color}
           onChangeText={setColor}
         />
+        <Text>Gradient:</Text>
+        <Button title={useGradient ? 'On' : 'Off'} onPress={() => setUseGradient(v => !v)} />
+        <Text>Type:</Text>
+        <Button title={gradientType} onPress={() => setGradientType(gradientType === 'linear' ? 'radial' : 'linear')} />
+        <Text>Symbol Pos:</Text>
+        <Button title={symbolPosition} onPress={() => setSymbolPosition(symbolPosition === 'before' ? 'after' : 'before')} />
+        <Text>RTL:</Text>
+        <Button title={rtl ? 'Yes' : 'No'} onPress={() => setRtl(r => !r)} />
         <Text>Search:</Text>
         <TextInput
           style={styles.input}
@@ -37,7 +49,29 @@ export default function CurrencyKitAdvancedDemo() {
       </View>
       {codes.map(code => (
         <View key={code} style={styles.row}>
-          <CurrencySymbol code={code} size={size} color={color} />
+          <CurrencyAmount
+            code={code}
+            amount={1234.56}
+            symbolPosition={symbolPosition}
+            rtl={rtl}
+            symbolProps={useGradient ? {
+              size,
+              gradientType,
+              gradientColors: gradientType === 'linear'
+                ? [
+                    { color: '#ff9800', offset: '0%' },
+                    { color: color, offset: '100%' },
+                  ]
+                : [
+                    { color: color, offset: '0%' },
+                    { color: '#f44336', offset: '100%' },
+                  ],
+              gradientProps: gradientType === 'linear'
+                ? { x1: '0', y1: '0', x2: '1', y2: '1' }
+                : { cx: '50%', cy: '50%', r: '50%' },
+            } : { size, color }}
+            amountProps={{ style: { fontSize: 20, color: '#333' } }}
+          />
           <Text style={styles.code}>{code}</Text>
           <Text style={styles.symbol}>{typeof currencySymbols[code] === 'object' ? JSON.stringify(currencySymbols[code]) : currencySymbols[code]}</Text>
         </View>

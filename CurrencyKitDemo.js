@@ -9,9 +9,34 @@ export default function CurrencyKitDemo() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>CurrencyKit Demo</Text>
-      {codes.map(code => (
+      {codes.map((code, i) => (
         <View key={code} style={styles.row}>
-          <CurrencySymbol code={code} size={36} color="#2196f3" />
+          {/* Alternate between color, linear gradient, and radial gradient */}
+          {i % 3 === 0 ? (
+            <CurrencySymbol code={code} size={36} color="#2196f3" />
+          ) : i % 3 === 1 ? (
+            <CurrencySymbol
+              code={code}
+              size={36}
+              gradientType="linear"
+              gradientColors={[
+                { color: '#ff9800', offset: '0%' },
+                { color: '#f44336', offset: '100%' },
+              ]}
+              gradientProps={{ x1: '0', y1: '0', x2: '1', y2: '1' }}
+            />
+          ) : (
+            <CurrencySymbol
+              code={code}
+              size={36}
+              gradientType="radial"
+              gradientColors={[
+                { color: '#4caf50', offset: '0%' },
+                { color: '#2196f3', offset: '100%' },
+              ]}
+              gradientProps={{ cx: '50%', cy: '50%', r: '50%' }}
+            />
+          )}
           <Text style={styles.code}>{code}</Text>
           <Text style={styles.symbol}>{currencySymbols[code]}</Text>
         </View>

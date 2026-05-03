@@ -1,3 +1,27 @@
+/**
+ * CurrencyAmount React Native component
+ * @param {object} props
+ * @param {string} props.code - ISO 4217 currency code
+ * @param {number|string} props.amount - The amount to display
+ * @param {string} [props.symbolPosition='before'] - 'before' or 'after'
+ * @param {boolean} [props.rtl] - If true, use RTL order
+ * @param {object} [props.symbolProps] - Props to pass to CurrencySymbol
+ * @param {object} [props.amountProps] - Props to pass to amount <Text>
+ */
+export function CurrencyAmount({ code, amount, symbolPosition = 'before', rtl, symbolProps = {}, amountProps = {} }) {
+  // Get symbol (string or SVG)
+  const symbol = <CurrencySymbol code={code} {...symbolProps} />;
+  const amt = <Text {...amountProps}>{amount}</Text>;
+  let children;
+  if (rtl) {
+    // RTL: amount then symbol (if after), or symbol then amount (if before)
+    children = symbolPosition === 'after' ? [amt, symbol] : [symbol, amt];
+  } else {
+    // LTR: symbol then amount (if before), or amount then symbol (if after)
+    children = symbolPosition === 'before' ? [symbol, amt] : [amt, symbol];
+  }
+  return <View style={{ flexDirection: 'row', alignItems: 'center' }}>{children}</View>;
+}
 // Entry point for currency-kit
 import { currencySymbols } from './currency-symbols.js';
 
